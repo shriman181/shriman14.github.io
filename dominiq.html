@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dominiq — Compliance OS for Defense Subcontractors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-void:      #07090F;
+  --bg-base:      #0C0F19;
+  --bg-raised:    #131724;
+  --bg-elevated:  #1A1F30;
+  --bg-hover:     #20263A;
+  --border-dim:   rgba(255,255,255,0.05);
+  --border-soft:  rgba(255,255,255,0.09);
+  --border-mid:   rgba(255,255,255,0.14);
+  --gold:         #C8A84A;
+  --gold-bright:  #E2C068;
+  --gold-dim:     rgba(200,168,74,0.15);
+  --gold-glow:    rgba(200,168,74,0.08);
+  --mint:         #2BFFC8;
+  --mint-dim:     rgba(43,255,200,0.12);
+  --mint-glow:    rgba(43,255,200,0.06);
+  --red:          #FF4040;
+  --red-dim:      rgba(255,64,64,0.15);
+  --text-primary: #EAE6DD;
+  --text-second:  #7A8299;
+  --text-third:   #3D4560;
+  --white:        #FFFFFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── scrollbar ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-void); }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+
+/* ─── utilities ─── */
+.mono { font-family: 'JetBrains Mono', monospace; }
+.gold { color: var(--gold); }
+.mint { color: var(--mint); }
+.red  { color: var(--red); }
+.muted { color: var(--text-second); }
+
+/* ─── classification bar ─── */
+.classbar {
+  background: var(--gold);
+  padding: 5px 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--bg-void);
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+.classbar-inner {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  align-items: center;
+}
+
+.classbar-inner span::before,
+.classbar-inner span::after {
+  content: '//';
+  opacity: 0.4;
+  margin: 0 8px;
+}
+
+/* ─── nav ─── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7,9,15,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid var(--border-dim);
+  padding: 0 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-logo-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: inline-block;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-second);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--text-primary); }
+
+.nav-cta {
+  background: var(--gold);
+  color: var(--bg-void) !important;
+  padding: 8px 20px;
+  border-radius: 2px;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background 0.2s !important;
+}
+
+.nav-cta:hover { background: var(--gold-bright) !important; color: var(--bg-void) !important; }
+
+/* ─── hero ─── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left {
+  padding: 120px 64px 120px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.hero-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(52px, 5.5vw, 82px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 32px;
+}
+
+.hero-title em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+.hero-title .hero-title-line2 {
+  -webkit-text-stroke: 1px rgba(234,230,221,0.3);
+  color: transparent;
+}
+
+.hero-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.7;
+  max-width: 420px;
+  margin-bottom: 48px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--bg-void);
+  padding: 14px 32px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-primary:hover { background: var(--gold-bright); transform: translateY(-1px); }
+
+.btn-ghost {
+  color: var(--text-second);
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  border: 0.5px solid var(--border-mid);
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-ghost:hover { border-color: var(--gold-dim); color: var(--text-primary); }
+
+.hero-stat-row {
+  display: flex;
+  gap: 40px;
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 0.5px solid var(--border-dim);
+}
+
+.hero-stat-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--text-second);
+  line-height: 1.4;
+}
+
+/* ─── hero right — scan viz ─── */
+.hero-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 0.5px solid var(--border-dim);
+  overflow: hidden;
+}
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border-dim) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-dim) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+.scan-terminal {
+  position: relative;
+  z-index: 2;
+  width: 480px;
+  background: var(--bg-raised);
+  border: 0.5px solid var(--border-soft);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 0.5px var(--border-dim);
+}
+
+.terminal-titlebar {
+  background: var(--bg-elevated);
+  border-bottom: 0.5px solid var(--border-soft);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.t-dot { width: 10px; height: 10px; border-radius: 50%; }
+.t-dot-r { background: #FF5F57; }
+.t-dot-y { background: #FEBC2E; }
+.t-dot-g { background: #28C840; }
+
+.terminal-path {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-second);
+  margin-left: 8px;
+}
+
+.terminal-body {
+  padding: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.9;
+  min-height: 320px;
+}
+
+.t-prompt { color: var(--gold); }
+.t-cmd    { color: var(--text-primary); }
+.t-out    { color: var(--mint); }
+.t-warn   { color: #FF9A3C; }
+.t-danger { color: var(--red); }
+.t-muted  { color: var(--text-second); }
+.t-bold   { font-weight: 500; }
+
+.scan-progress-bar {
+  height: 2px;
+  background: var(--border-dim);
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--mint));
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: var(--gold);
+  vertical-align: middle;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ─── section base ─── */
+section {
+  padding: 120px 80px;
+  position: relative;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::before {
+  content: '▸';
+  font-size: 8px;
+}
+
+.section-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(40px, 4vw, 60px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.section-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ─── divider ─── */
+.divider {
+  height: 0.5px;
+  background: var(--border-dim);
+  margin: 0 80px;
+}
+
+/* ─── problem section ─── */
+.problem {
+  background: var(--bg-base);
+  border-top: 0.5px solid var(--border-dim);
+  border-bottom: 0.5px solid var(--border-dim);
+}
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 64px;
+}
+
+.problem-quote-block {
+  border-left: 2px solid var(--red);
+  padding-left: 28px;
+  padding-top: 4px;
+}
+
+.problem-quote {
+  font-size: 17px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.problem-attr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-second);
+  letter-spacing: 0.04em;
+}
+
+.pain-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pain-card {
+  background: var(--bg-raised);
+  border: 0.5px solid var(--border-dim);
+  border-radius: 3px;
+  padding: 18px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: default;
+}
+
+.pain-card:hover {
+  border-color: var(--border-soft);
+  background: var(--bg-elevated);
+}
+
+.pain-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--gold);
+  min-width: 28px;
+  padding-top: 2px;
+}
+
+.pain-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.pain-body {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.6;
+}
+
+/* ─── stat strip ─── */
+.stat-strip {
+  background: var(--bg-void);
+  border-top: 0.5px solid var(--border-dim);
+  border-bottom: 0.5px solid var(--border-dim);
+  padding: 0 80px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.stat-item {
+  padding: 48px 0;
+  border-right: 0.5px solid var(--border-dim);
+  padding-right: 40px;
+  padding-left: 40px;
+}
+
+.stat-item:first-child { padding-left: 0; }
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 48px;
+  line-height: 1;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.stat-num .stat-suffix {
+  font-size: 28px;
+  color: var(--gold);
+}
+
+.stat-label {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.4;
+}
+
+/* ─── how it works ─── */
+.hiw {
+  background: var(--bg-void);
+}
+
+.hiw-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: 64px;
+  background: var(--border-dim);
+  border: 0.5px solid var(--border-dim);
+}
+
+.hiw-step {
+  background: var(--bg-base);
+  padding: 36px 28px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.hiw-step:hover { background: var(--bg-raised); }
+
+.hiw-step-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--border-mid);
+  line-height: 1;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+
+.hiw-step:hover .hiw-step-num { color: var(--gold-dim); }
+
+.hiw-step-icon {
+  width: 40px; height: 40px;
+  border: 0.5px solid var(--border-soft);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  background: var(--bg-elevated);
+}
+
+.hiw-step-icon svg { width: 18px; height: 18px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+
+.hiw-step-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.hiw-step-body {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.6;
+}
+
+.hiw-step-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--mint);
+  background: var(--mint-dim);
+  border: 0.5px solid rgba(43,255,200,0.2);
+  padding: 2px 8px;
+  border-radius: 1px;
+  margin-top: 14px;
+  letter-spacing: 0.06em;
+}
+
+/* ─── modules / features ─── */
+.modules {
+  background: var(--bg-base);
+  border-top: 0.5px solid var(--border-dim);
+}
+
+.modules-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 64px;
+  align-items: end;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border-dim);
+  border: 0.5px solid var(--border-dim);
+}
+
+.mod-card {
+  background: var(--bg-base);
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.25s;
+}
+
+.mod-card:hover { background: var(--bg-raised); }
+
+.mod-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.mod-card:hover::before { transform: scaleX(1); }
+
+.mod-stamp {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 1px;
+  margin-bottom: 28px;
+  display: inline-block;
+}
+
+.stamp-gold { color: var(--gold); background: var(--gold-dim); border: 0.5px solid rgba(200,168,74,0.25); }
+.stamp-mint { color: var(--mint); background: var(--mint-dim); border: 0.5px solid rgba(43,255,200,0.25); }
+.stamp-red  { color: var(--red);  background: var(--red-dim);  border: 0.5px solid rgba(255,64,64,0.25); }
+
+.mod-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.mod-body {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.mod-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mod-features li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-second);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.02em;
+}
+
+.mod-features li::before {
+  content: '→';
+  color: var(--gold);
+}
+
+/* ─── why now ─── */
+.why-now {
+  background: var(--bg-void);
+  border-top: 0.5px solid var(--border-dim);
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border-dim);
+  margin-top: 64px;
+}
+
+.why-card {
+  background: var(--bg-base);
+  padding: 40px 32px;
+  transition: background 0.2s;
+}
+
+.why-card:hover { background: var(--bg-raised); }
+
+.why-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--border-mid);
+  margin-bottom: 20px;
+}
+
+.why-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.why-body {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.7;
+}
+
+/* ─── compliance score visual ─── */
+.score-section {
+  background: var(--bg-base);
+  border-top: 0.5px solid var(--border-dim);
+  border-bottom: 0.5px solid var(--border-dim);
+  padding: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.score-vis {
+  position: relative;
+}
+
+.score-doc {
+  background: var(--bg-raised);
+  border: 0.5px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.score-doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid var(--border-dim);
+}
+
+.score-doc-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-second);
+  letter-spacing: 0.08em;
+}
+
+.score-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  background: var(--mint-dim);
+  color: var(--mint);
+  border: 0.5px solid rgba(43,255,200,0.2);
+  padding: 3px 10px;
+  border-radius: 1px;
+  letter-spacing: 0.08em;
+}
+
+.score-rows { display: flex; flex-direction: column; gap: 12px; }
+
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.score-row-label {
+  font-size: 12px;
+  color: var(--text-second);
+  min-width: 140px;
+}
+
+.score-bar-wrap {
+  flex: 1;
+  height: 4px;
+  background: var(--border-dim);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--gold);
+  transform-origin: left;
+  animation: barGrow 1.5s ease-out forwards;
+  transform: scaleX(0);
+}
+
+.score-bar-fill.mint-bar { background: var(--mint); }
+.score-bar-fill.red-bar  { background: var(--red); }
+
+@keyframes barGrow { to { transform: scaleX(1); } }
+
+.score-row-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  min-width: 32px;
+  text-align: right;
+}
+
+.score-total {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 0.5px solid var(--border-dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.score-total-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-second);
+  letter-spacing: 0.06em;
+}
+
+.score-total-val {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--mint);
+  letter-spacing: -0.02em;
+}
+
+.score-content .section-title { margin-bottom: 20px; }
+
+.score-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.score-list li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.55;
+}
+
+.score-list li::before {
+  content: '✓';
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--mint);
+  font-size: 12px;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+/* ─── pricing ─── */
+.pricing {
+  background: var(--bg-void);
+  border-top: 0.5px solid var(--border-dim);
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border-dim);
+  margin-top: 64px;
+  border: 0.5px solid var(--border-dim);
+}
+
+.price-card {
+  background: var(--bg-base);
+  padding: 48px 44px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.price-card.featured {
+  background: var(--bg-raised);
+}
+
+.price-card.featured::after {
+  content: 'MOST POPULAR';
+  position: absolute;
+  top: 20px; right: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  background: var(--gold-dim);
+  border: 0.5px solid rgba(200,168,74,0.3);
+  padding: 4px 10px;
+  border-radius: 1px;
+}
+
+.price-tier {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-second);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.price-num {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 56px;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.price-num span {
+  font-size: 20px;
+  color: var(--text-second);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.price-desc {
+  font-size: 13px;
+  color: var(--text-second);
+  margin-bottom: 36px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.price-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.price-features li {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.price-features li::before {
+  content: '—';
+  color: var(--gold);
+  font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
+}
+
+.btn-primary-full {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: var(--gold);
+  color: var(--bg-void);
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+  text-transform: uppercase;
+}
+
+.btn-primary-full:hover { background: var(--gold-bright); }
+
+.btn-outline-full {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  color: var(--text-second);
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  border: 0.5px solid var(--border-mid);
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+  text-transform: uppercase;
+}
+
+.btn-outline-full:hover { border-color: var(--gold); color: var(--text-primary); }
+
+/* ─── founder ─── */
+.founder {
+  background: var(--bg-base);
+  border-top: 0.5px solid var(--border-dim);
+}
+
+.founder-inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.founder-avatar {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--bg-elevated);
+  border: 0.5px solid var(--border-soft);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.founder-initials {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 72px;
+  color: var(--border-mid);
+  letter-spacing: -0.02em;
+  user-select: none;
+}
+
+.founder-avatar-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(7,9,15,0.8);
+  border-top: 0.5px solid var(--border-dim);
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+.founder-content {
+  padding-top: 8px;
+}
+
+.founder-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.founder-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 28px;
+}
+
+.founder-bio {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.75;
+  max-width: 520px;
+  margin-bottom: 36px;
+}
+
+.founder-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.founder-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-second);
+  background: var(--bg-elevated);
+  border: 0.5px solid var(--border-soft);
+  padding: 5px 12px;
+  border-radius: 1px;
+  text-transform: uppercase;
+}
+
+/* ─── CTA ─── */
+.cta-section {
+  background: var(--bg-void);
+  border-top: 0.5px solid var(--border-dim);
+  padding: 120px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-bg-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 320px;
+  color: transparent;
+  -webkit-text-stroke: 0.5px var(--border-dim);
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 5vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.cta-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto 48px;
+}
+
+.cta-email-row {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.cta-email-input {
+  flex: 1;
+  background: var(--bg-raised);
+  border: 0.5px solid var(--border-soft);
+  border-right: none;
+  border-radius: 2px 0 0 2px;
+  padding: 14px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cta-email-input::placeholder { color: var(--text-third); }
+.cta-email-input:focus { border-color: var(--gold); }
+
+.cta-email-btn {
+  background: var(--gold);
+  color: var(--bg-void);
+  border: none;
+  border-radius: 0 2px 2px 0;
+  padding: 14px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.cta-email-btn:hover { background: var(--gold-bright); }
+
+.cta-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-third);
+  margin-top: 16px;
+  letter-spacing: 0.06em;
+}
+
+/* ─── footer ─── */
+footer {
+  background: var(--bg-void);
+  border-top: 0.5px solid var(--border-dim);
+  padding: 48px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.footer-brand { grid-column: span 1; }
+
+.footer-logo {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.footer-tagline {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-second);
+  line-height: 1.6;
+  max-width: 200px;
+  margin-bottom: 20px;
+}
+
+.footer-class {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--border-mid);
+  text-transform: uppercase;
+}
+
+.footer-col-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-second);
+  margin-bottom: 16px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-third);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--text-second); }
+
+.footer-bottom {
+  background: var(--bg-void);
+  border-top: 0.5px solid var(--border-dim);
+  padding: 20px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-third);
+  letter-spacing: 0.06em;
+}
+
+/* ─── subtle corner marks (decorative) ─── */
+.corner-mark {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.corner-mark.tl { top: 16px; left: 16px; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+.corner-mark.tr { top: 16px; right: 16px; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+.corner-mark.bl { bottom: 16px; left: 16px; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+.corner-mark.br { bottom: 16px; right: 16px; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+
+/* ─── animated scan line ─── */
+@keyframes scanline {
+  0%   { top: 0%; opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--mint), transparent);
+  animation: scanline 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── responsive minimal ─── */
+@media (max-width: 900px) {
+  nav { padding: 0 24px; }
+  nav .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { display: none; }
+  .hero-left { padding: 80px 24px; }
+  section { padding: 80px 24px; }
+  .divider { margin: 0 24px; }
+  .stat-strip { grid-template-columns: 1fr 1fr; padding: 0 24px; }
+  .hiw-steps { grid-template-columns: 1fr 1fr; }
+  .modules-grid { grid-template-columns: 1fr; }
+  .modules-header { grid-template-columns: 1fr; gap: 24px; }
+  .why-grid { grid-template-columns: 1fr; }
+  .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+  .score-section { grid-template-columns: 1fr; padding: 60px 24px; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .founder-inner { grid-template-columns: 1fr; }
+  .founder-avatar { max-width: 200px; }
+  footer { grid-template-columns: 1fr 1fr; padding: 40px 24px; }
+  .footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+  .cta-section { padding: 80px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- classification bar -->
+<div class="classbar">
+  <div class="classbar-inner">
+    <span>ITAR CONTROLLED</span>
+    <span>CMMC 2.0</span>
+    <span>CUI — DEFENSE</span>
+  </div>
+</div>
+
+<!-- nav -->
+<nav>
+  <a href="#" class="nav-logo">
+    dominiq <span class="nav-logo-dot"></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#product">Product</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#founder">About</a></li>
+    <li><a href="#contact" class="nav-cta">Request Access</a></li>
+  </ul>
+</nav>
+
+<!-- hero -->
+<section class="hero" style="padding:0; position:relative;">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Compliance Intelligence for Defense</div>
+    <h1 class="hero-title">
+      AUDIT<br>
+      <em>READY.</em><br>
+      <span class="hero-title-line2">ALWAYS.</span>
+    </h1>
+    <p class="hero-sub">
+      dominiq is the AI compliance OS for Tier 2 and Tier 3 defense subcontractors — ITAR classification, CMMC audit prep, and supply chain vetting at a price your 40-person shop can actually afford.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Request Early Access</a>
+      <a href="#product" class="btn-ghost">See how it works →</a>
+    </div>
+    <div class="hero-stat-row">
+      <div>
+        <div class="hero-stat-num" id="stat1">300k<span style="color:var(--gold)">+</span></div>
+        <div class="hero-stat-label">US suppliers impacted<br>by CMMC 2.0</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">$500k</div>
+        <div class="hero-stat-label">average Big 4<br>compliance cost</div>
+      </div>
+      <div>
+        <div class="hero-stat-num" style="color:var(--mint)">18mo</div>
+        <div class="hero-stat-label">average time to get<br>audit-ready, unaided</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-grid-bg"></div>
+    <div class="scan-line"></div>
+    <div class="scan-terminal">
+      <div class="terminal-titlebar">
+        <span class="t-dot t-dot-r"></span>
+        <span class="t-dot t-dot-y"></span>
+        <span class="t-dot t-dot-g"></span>
+        <span class="terminal-path">dominiq / live-scan / workspace</span>
+      </div>
+      <div class="scan-progress-bar">
+        <div class="scan-progress-fill" id="progressFill"></div>
+      </div>
+      <div class="terminal-body" id="terminalBody">
+        <span class="t-muted"># initiating workspace scan...</span><br>
+      </div>
+    </div>
+    <div class="corner-mark tl"></div>
+    <div class="corner-mark tr"></div>
+    <div class="corner-mark bl"></div>
+    <div class="corner-mark br"></div>
+  </div>
+</section>
+
+<!-- stat strip -->
+<div class="stat-strip">
+  <div class="stat-item">
+    <div class="stat-num">110<span class="stat-suffix"> controls</span></div>
+    <div class="stat-label">NIST 800-171 practices required<br>for CMMC Level 2 certification</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">$250k<span class="stat-suffix">+</span></div>
+    <div class="stat-label">minimum ITAR penalty per<br>unauthorized disclosure</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">72<span class="stat-suffix">hrs</span></div>
+    <div class="stat-label">max time to report a CUI<br>incident under DFARS</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><span class="stat-suffix">~</span>3k</div>
+    <div class="stat-label">qualified CMMC assessors for<br>300k+ suppliers who need one</div>
+  </div>
+</div>
+
+<!-- problem -->
+<section class="problem" id="problem">
+  <div class="section-label">The Real Problem</div>
+  <h2 class="section-title">COMPLIANCE IS<br>BREAKING SMALL<br>DEFENSE SHOPS.</h2>
+  <div class="problem-grid">
+    <div>
+      <div class="problem-quote-block">
+        <p class="problem-quote">"We lost a $3M Raytheon subcontract last quarter because we couldn't prove our document access logs were clean. I have 38 employees. My compliance person is also my HR manager. She's not a lawyer. She's not a CMMC consultant. She's just terrified."</p>
+        <p class="problem-attr">— Owner, 40-person aerospace machining shop, Ohio</p>
+      </div>
+    </div>
+    <div class="pain-cards">
+      <div class="pain-card">
+        <div class="pain-icon">01</div>
+        <div>
+          <div class="pain-title">Document chaos nobody owns</div>
+          <div class="pain-body">ITAR-controlled drawings live in someone's Gmail, a shared Dropbox, a thumb drive from 2019, and a binder in accounting. Nobody knows which version is current. An export control violation waits in every inbox.</div>
+        </div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">02</div>
+        <div>
+          <div class="pain-title">Audit prep that takes months — every time</div>
+          <div class="pain-body">When a C3PAO assessor shows up, they want policies, access logs, training records, and evidence for all 110 NIST 800-171 practices. Most suppliers spend 3–6 months manually assembling this from scratch, every single audit cycle.</div>
+        </div>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">03</div>
+        <div>
+          <div class="pain-title">Supply chain blind spots</div>
+          <div class="pain-body">Prime contractors are pushing CMMC requirements down to Tier 2s, who need their own sub-suppliers to comply. One non-compliant fastener supplier can kill a $50M prime contract. Nobody has visibility into this.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- how it works -->
+<section class="hiw" id="product">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">OPEN. CONNECT.<br>GET AUDIT-READY.</h2>
+  <div class="hiw-steps">
+    <div class="hiw-step">
+      <div class="hiw-step-num">01</div>
+      <div class="hiw-step-icon">
+        <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      </div>
+      <div class="hiw-step-title">Connect your existing systems</div>
+      <div class="hiw-step-body">Link SharePoint, Google Drive, Dropbox, shared network drives, or email. dominiq ingests everything — no migration, no restructuring.</div>
+      <div class="hiw-step-tag">SETUP: &lt; 30 MIN</div>
+    </div>
+    <div class="hiw-step">
+      <div class="hiw-step-num">02</div>
+      <div class="hiw-step-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div class="hiw-step-title">AI classifies every document</div>
+      <div class="hiw-step-body">Every file is read and labeled: CUI, ITAR-controlled, export-restricted, or clean. Access logs tracked. Foreign national exposure flagged automatically.</div>
+      <div class="hiw-step-tag">AI-POWERED</div>
+    </div>
+    <div class="hiw-step">
+      <div class="hiw-step-num">03</div>
+      <div class="hiw-step-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <div class="hiw-step-title">Live compliance gap report</div>
+      <div class="hiw-step-body">Maps your current state against CMMC Level 1 or 2 and ITAR §120–130. Every gap linked to the exact document or policy that caused it.</div>
+      <div class="hiw-step-tag">REAL-TIME</div>
+    </div>
+    <div class="hiw-step">
+      <div class="hiw-step-num">04</div>
+      <div class="hiw-step-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="hiw-step-title">One-click audit pack</div>
+      <div class="hiw-step-body">Generates your SSP, POAM, access logs, training evidence, policy documents, and a C3PAO-ready evidence bundle. Months of work, done in hours.</div>
+      <div class="hiw-step-tag">ASSESSOR-READY</div>
+    </div>
+  </div>
+</section>
+
+<!-- modules -->
+<section class="modules">
+  <div class="modules-header">
+    <div>
+      <div class="section-label">Core Modules</div>
+      <h2 class="section-title">THREE MODULES.<br>ONE SYSTEM.</h2>
+    </div>
+    <p class="section-sub">dominiq handles what your compliance coordinator, your IT team, and your CMMC consultant should have been doing — without the six-figure invoice.</p>
+  </div>
+  <div class="modules-grid">
+    <div class="mod-card">
+      <div class="mod-stamp stamp-gold">ITAR / CUI</div>
+      <div class="mod-title">Document Intelligence</div>
+      <p class="mod-body">The AI reads the content of every file and determines its classification status, sensitivity level, and access risk. No manual tagging. No guessing. No exposure.</p>
+      <ul class="mod-features">
+        <li>CUI and ITAR-controlled content detection</li>
+        <li>Foreign national access monitoring</li>
+        <li>Version control and access logging</li>
+        <li>Unauthorized channel alerts (personal email, USB)</li>
+        <li>Export classification by USML / EAR category</li>
+      </ul>
+    </div>
+    <div class="mod-card">
+      <div class="mod-stamp stamp-mint">CMMC 2.0</div>
+      <div class="mod-title">Audit Readiness Engine</div>
+      <p class="mod-body">Maps your current state against all 110 CMMC Level 2 practices in real time. When the assessor shows up, you're already ready — not scrambling for months to get there.</p>
+      <ul class="mod-features">
+        <li>Live 110-practice compliance scorecard</li>
+        <li>Auto-generated SSP and POAM</li>
+        <li>AI-drafted policies (12+ required documents)</li>
+        <li>Evidence bundle in C3PAO-compatible format</li>
+        <li>Training record tracking and attestation</li>
+      </ul>
+    </div>
+    <div class="mod-card">
+      <div class="mod-stamp stamp-red">SUPPLY CHAIN</div>
+      <div class="mod-title">Supplier Vetting</div>
+      <p class="mod-body">Send CMMC flow-down questionnaires to your sub-suppliers directly from dominiq. Score them automatically. Know exactly which link in your chain is going to cost you a contract.</p>
+      <ul class="mod-features">
+        <li>Automated compliance questionnaires</li>
+        <li>Tier 3 supplier risk scoring</li>
+        <li>Flow-down requirement mapping</li>
+        <li>Real-time supplier compliance dashboard</li>
+        <li>Remediation guidance for sub-suppliers</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- why now -->
+<section class="why-now">
+  <div class="section-label">Why Now</div>
+  <h2 class="section-title">THE WINDOW<br>IS OPEN.</h2>
+  <p class="section-sub" style="margin-bottom:0">Three things converged at exactly the same moment. This problem is solvable now in a way it simply wasn't before.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <div class="why-title">CMMC 2.0 is now enforceable law</div>
+      <div class="why-body">The final CMMC rule dropped in late 2024. Contracts with mandatory certification requirements start flowing in 2025–2026. The deadline is real, it's in the contract language, and suppliers who miss it lose their programs. The market pressure is unlike anything this space has seen.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <div class="why-title">AI can finally read what used to require a lawyer</div>
+      <div class="why-body">Determining whether a 200-page engineering spec contains ITAR-controlled technical data required a licensed export control attorney in 2020. In 2025, a fine-tuned model does it in seconds with high accuracy. That's the core unlock that makes dominiq possible — and makes it cheap enough for a 40-person shop.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <div class="why-title">There are 300k suppliers and 3k assessors</div>
+      <div class="why-body">The math doesn't work for consulting. There simply aren't enough qualified CMMC practitioners to serve this market manually at any price point. Software is the only infrastructure that can close this gap. And suppliers already know they can't afford what Deloitte charges.</div>
+    </div>
+  </div>
+</section>
+
+<!-- compliance score visual -->
+<div class="score-section">
+  <div class="score-vis">
+    <div class="score-doc">
+      <div class="corner-mark tl"></div>
+      <div class="corner-mark tr"></div>
+      <div class="corner-mark bl"></div>
+      <div class="corner-mark br"></div>
+      <div class="score-doc-header">
+        <span class="score-doc-title mono">CMMC LEVEL 2 — READINESS REPORT</span>
+        <span class="score-badge">LIVE</span>
+      </div>
+      <div class="score-rows">
+        <div class="score-row">
+          <span class="score-row-label" style="font-size:12px;color:var(--text-second)">Access Control (AC)</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:88%;animation-delay:0.1s"></div></div>
+          <span class="score-row-val" style="color:var(--gold)">88%</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row-label" style="font-size:12px;color:var(--text-second)">Audit & Accountability (AU)</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill mint-bar" style="width:95%;animation-delay:0.2s"></div></div>
+          <span class="score-row-val" style="color:var(--mint)">95%</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row-label" style="font-size:12px;color:var(--text-second)">Configuration Mgmt (CM)</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:72%;animation-delay:0.3s"></div></div>
+          <span class="score-row-val" style="color:var(--gold)">72%</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row-label" style="font-size:12px;color:var(--text-second)">Incident Response (IR)</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill red-bar" style="width:41%;animation-delay:0.4s"></div></div>
+          <span class="score-row-val" style="color:var(--red)">41%</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row-label" style="font-size:12px;color:var(--text-second)">Media Protection (MP)</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill mint-bar" style="width:100%;animation-delay:0.5s"></div></div>
+          <span class="score-row-val" style="color:var(--mint)">100%</span>
+        </div>
+        <div class="score-row">
+          <span class="score-row-label" style="font-size:12px;color:var(--text-second)">Risk Assessment (RA)</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:63%;animation-delay:0.6s"></div></div>
+          <span class="score-row-val" style="color:var(--gold)">63%</span>
+        </div>
+      </div>
+      <div class="score-total">
+        <span class="score-total-label">OVERALL READINESS SCORE</span>
+        <span class="score-total-val" id="scoreCounter">76%</span>
+      </div>
+    </div>
+  </div>
+  <div class="score-content">
+    <div class="section-label">Compliance, live</div>
+    <h2 class="section-title">YOUR SCORE.<br>UPDATED DAILY.</h2>
+    <p style="font-size:15px;font-weight:300;color:var(--text-second);line-height:1.7;">Most companies find out they're not compliant the day the assessor walks in. dominiq tells you every morning — with the exact practice, the exact document, and the exact fix.</p>
+    <ul class="score-list">
+      <li>Real-time gap tracking across all 110 CMMC Level 2 practices</li>
+      <li>Every gap linked to the specific document or missing policy causing it</li>
+      <li>AI-generated remediation guidance — not just the problem, but the fix</li>
+      <li>Score history shows improvement over time for program managers</li>
+      <li>Export to C3PAO-compatible format, one click</li>
+    </ul>
+  </div>
+</div>
+
+<!-- pricing -->
+<section class="pricing" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">BUILT FOR SHOPS<br>NOT BANKS.</h2>
+  <p class="section-sub">No six-month consulting engagement. No Big 4 invoice. Just software that works — at a price that doesn't make your CFO quit.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">Starter — CMMC Level 1</div>
+      <div class="price-num">$399<span>/ mo</span></div>
+      <p class="price-desc">Up to 50 employees. For suppliers who need to get their foundations right before Level 2 certification pressure arrives.</p>
+      <ul class="price-features">
+        <li>Document classification and CUI tagging</li>
+        <li>CMMC Level 1 gap report (17 practices)</li>
+        <li>Basic policy document generation</li>
+        <li>ITAR exposure scanning (up to 5,000 files)</li>
+        <li>Self-assessment support materials</li>
+      </ul>
+      <a href="#contact" class="btn-outline-full">Get Started</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-tier">Pro — CMMC Level 2</div>
+      <div class="price-num">$1,200<span>/ mo</span></div>
+      <p class="price-desc">Up to 250 employees. The full compliance OS — document intelligence, audit readiness, and supply chain vetting in one system.</p>
+      <ul class="price-features">
+        <li>Everything in Starter, plus:</li>
+        <li>Full 110-practice CMMC Level 2 scorecard</li>
+        <li>Auto-generated SSP, POAM, and evidence bundle</li>
+        <li>Complete policy suite (12+ required documents)</li>
+        <li>Supplier vetting module (up to 25 sub-suppliers)</li>
+        <li>C3PAO assessor-ready export</li>
+        <li>Priority support + dedicated onboarding call</li>
+      </ul>
+      <a href="#contact" class="btn-primary-full">Request Access</a>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-third);text-align:center;margin-top:24px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;">ENTERPRISE PRICING AVAILABLE FOR PRIME CONTRACTORS AND ASSOCIATIONS → contact@dominiq.io</p>
+</section>
+
+<!-- founder -->
+<section class="founder" id="founder">
+  <div class="founder-inner">
+    <div>
+      <div class="founder-avatar">
+        <span class="founder-initials">KS</span>
+        <div class="founder-avatar-label">FOUNDER &amp; CEO</div>
+      </div>
+    </div>
+    <div class="founder-content">
+      <div class="section-label">The Founder</div>
+      <div class="founder-name">Krish Soni</div>
+      <div class="founder-role">FOUNDER &amp; CEO // dominiq</div>
+      <p class="founder-bio">
+        Krish built dominiq after watching defense subcontractors — family businesses, precision shops, specialty manufacturers — lose contracts not because they were bad at their work, but because they couldn't prove they were compliant. The system was broken: the compliance burden was designed for Lockheed, not for a 40-person shop in Ohio with no IT staff.
+      </p>
+      <p class="founder-bio" style="margin-top:-12px;">
+        dominiq is the company he wished existed three years ago. Built for the people who actually make the parts that keep things flying, not for the consultants who charge to explain the paperwork.
+      </p>
+      <div class="founder-tags">
+        <span class="founder-tag">Defense Supply Chain</span>
+        <span class="founder-tag">ITAR / CMMC</span>
+        <span class="founder-tag">AI / ML</span>
+        <span class="founder-tag">B2B SaaS</span>
+        <span class="founder-tag">GovTech</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-bg-text">AUDIT</div>
+  <div class="cta-content">
+    <div class="section-label" style="justify-content:center;margin-bottom:20px;">Early Access</div>
+    <h2 class="cta-title">DON'T FIND OUT<br>FROM THE AUDITOR.</h2>
+    <p class="cta-sub">Join the waitlist. Be one of the first 50 suppliers to run a live dominiq scan — free for 30 days, no credit card required.</p>
+    <div class="cta-email-row">
+      <input type="email" class="cta-email-input" placeholder="your@company.com">
+      <button class="cta-email-btn">Get Access</button>
+    </div>
+    <p class="cta-note">NO SPAM. NO SALES CALLS. JUST ACCESS. // compliance@dominiq.io</p>
+  </div>
+</section>
+
+<!-- footer -->
+<footer>
+  <div class="footer-brand">
+    <div class="footer-logo">
+      dominiq <span class="nav-logo-dot"></span>
+    </div>
+    <p class="footer-tagline">Compliance OS for defense subcontractors. Built for the shops that build the parts.</p>
+    <div class="footer-class">// ITAR · CMMC · CUI</div>
+  </div>
+  <div>
+    <div class="footer-col-title">Product</div>
+    <ul class="footer-links">
+      <li><a href="#">Document Intelligence</a></li>
+      <li><a href="#">Audit Readiness Engine</a></li>
+      <li><a href="#">Supplier Vetting</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Changelog</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Company</div>
+    <ul class="footer-links">
+      <li><a href="#">About</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Press</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="footer-col-title">Compliance</div>
+    <ul class="footer-links">
+      <li><a href="#">CMMC 2.0 Guide</a></li>
+      <li><a href="#">ITAR Basics</a></li>
+      <li><a href="#">CUI Handbook</a></li>
+      <li><a href="#">NIST 800-171</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 DOMINIQ INC. // ALL RIGHTS RESERVED</span>
+  <span class="footer-copy">NOT LEGAL ADVICE. NOT EXPORT COUNSEL. JUST DAMN GOOD SOFTWARE.</span>
+</div>
+
+<script>
+// terminal typing animation
+(function() {
+  const body = document.getElementById('terminalBody');
+  const fill = document.getElementById('progressFill');
+
+  const lines = [
+    { text: '$ dominiq scan --workspace ./ --deep', cls: 't-cmd', delay: 400 },
+    { text: '→ connecting to 4 sources...', cls: 't-muted', delay: 900 },
+    { text: '→ scanning 2,847 files', cls: 't-muted', delay: 1400 },
+    { text: '', cls: '', delay: 1800 },
+    { text: '[ CLASSIFICATION RESULTS ]', cls: 't-prompt t-bold', delay: 2000 },
+    { text: '  CUI identified          214 docs', cls: 't-out', delay: 2400 },
+    { text: '  ITAR-controlled data     38 docs', cls: 't-warn', delay: 2800 },
+    { text: '  CLEAN / uncontrolled  2,595 docs', cls: 't-muted', delay: 3200 },
+    { text: '', cls: '', delay: 3400 },
+    { text: '[ CRITICAL FINDINGS ]', cls: 't-danger t-bold', delay: 3600 },
+    { text: '  ✗ 3 ITAR docs sent via personal Gmail', cls: 't-danger', delay: 4000 },
+    { text: '  ✗ 2 recipients flagged: foreign nationals', cls: 't-danger', delay: 4400 },
+    { text: '  ✗ penalty exposure: $250K – $1.2M', cls: 't-danger', delay: 4900 },
+    { text: '', cls: '', delay: 5100 },
+    { text: '→ generating full report...', cls: 't-muted', delay: 5300 },
+    { text: '✓ audit pack ready. 214 pages.', cls: 't-out t-bold', delay: 5800 },
+  ];
+
+  let lineIndex = 0;
+  let cursorEl = document.createElement('span');
+  cursorEl.className = 'cursor';
+
+  function addLine(line) {
+    if (lineIndex >= lines.length) {
+      body.appendChild(cursorEl);
+      return;
+    }
+    const item = lines[lineIndex];
+    lineIndex++;
+
+    if (item.text === '') {
+      body.appendChild(document.createElement('br'));
+    } else {
+      const span = document.createElement('span');
+      span.className = item.cls;
+      span.textContent = item.text;
+      body.appendChild(span);
+      body.appendChild(document.createElement('br'));
+    }
+
+    // progress fill
+    const pct = Math.round((lineIndex / lines.length) * 100);
+    fill.style.width = pct + '%';
+
+    body.scrollTop = body.scrollHeight;
+    setTimeout(addLine, item.delay - (lineIndex > 1 ? lines[lineIndex-2].delay : 0));
+  }
+
+  // relative delays
+  function scheduleLines() {
+    lines.forEach((line, i) => {
+      setTimeout(() => {
+        if (line.text === '') {
+          body.appendChild(document.createElement('br'));
+        } else {
+          const span = document.createElement('span');
+          span.className = line.cls;
+          span.textContent = line.text;
+          body.appendChild(span);
+          body.appendChild(document.createElement('br'));
+        }
+        const pct = Math.round(((i + 1) / lines.length) * 100);
+        fill.style.width = pct + '%';
+        body.scrollTop = body.scrollHeight;
+        if (i === lines.length - 1) {
+          body.appendChild(cursorEl);
+        }
+      }, line.delay);
+    });
+  }
+
+  scheduleLines();
+})();
+
+// counter animation for stat numbers
+function animateCounter(el, target, suffix, duration) {
+  if (!el) return;
+  const start = 0;
+  const startTime = performance.now();
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = Math.floor(eased * target);
+    el.textContent = val + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+// intersection observer to trigger animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      if (el.id === 'scoreCounter') {
+        animateCounter(el, 76, '%', 1800);
+        observer.unobserve(el);
+      }
+    }
+  });
+}, { threshold: 0.5 });
+
+const scoreEl = document.getElementById('scoreCounter');
+if (scoreEl) observer.observe(scoreEl);
+
+// smooth nav highlight
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 80;
+    if (window.scrollY >= top) current = sec.id;
+  });
+  navLinks.forEach(link => {
+    link.style.color = link.getAttribute('href') === '#' + current
+      ? 'var(--gold)'
+      : '';
+  });
+});
+</script>
+
+</body>
+</html>
