@@ -1,0 +1,46 @@
+# Dominiq
+
+> Dominiq is AI compliance software for Tier 2 and Tier 3 U.S. defense subcontractors. It classifies ITAR and CUI files, maps evidence to the 110 NIST SP 800-171 requirements, and vets suppliers against the clauses a company flows down to them. Dominiq is pre-launch; demos and early access are by email at team@dominiq.site.
+
+Dominiq is for the operations manager or office lead at a small defense manufacturer — a machine shop, electronics builder or specialty supplier — who owns the company's SPRS score without a dedicated compliance department.
+
+## What the product does
+
+- Connects through read-only connectors to SharePoint, OneDrive, shop file servers and mailboxes. Files are not moved or copied out of the customer's environment.
+- Classifies files by reading export legends, distribution statements, drawing title blocks and CUI banners in context. Low-confidence calls go to a human review queue.
+- Traces who opened controlled files and flags controlled files leaving their boundary, such as being emailed to a personal account.
+- Maps evidence to each of the 110 NIST SP 800-171 Rev 2 requirements and estimates an SPRS score with the DoD Assessment Methodology.
+- Drafts System Security Plan text and POA&M items, with open items tracked against the 180-day closeout window.
+- Answers plain-English questions about who can open a file and what that access means under ITAR, then drafts a fix for a human to approve.
+- Sends flow-down questionnaires to suppliers, collects SPRS scores and affirmations, and keeps a ledger of which suppliers received which clauses.
+- Starts the 72-hour DFARS 252.204-7012 reporting clock when a possible CUI incident is detected and lists the steps: contain, preserve images for at least 90 days, report through DIBNet.
+
+## What a customer gets
+
+- An SPRS estimate tied line by line to evidence
+- A System Security Plan and POA&M that match what is actually configured
+- An inventory of every ITAR and CUI file: where it lives, how it is marked and who has opened it
+- A flow-down ledger of suppliers
+
+## Data handling
+
+Dominiq is designed to run inside the customer's own Microsoft 365 GCC High or Azure Government tenant through read-only connectors, so files are not copied out and the Dominiq team does not need access to them. Dominiq does not issue CMMC certifications and is not legal or export-control advice.
+
+## Regulatory context (as of 3 November 2026)
+
+- CMMC Phase 2 third-party certification has been suspended since 13 July 2026, with restart options under review.
+- Phase 1 self-assessments and annual SPRS affirmations remain in force, as they have since 10 November 2025.
+- DFARS 252.204-7012 requires NIST SP 800-171, 72-hour cyber incident reporting and flow-down to subcontracts.
+- Sources are listed at https://dominiq.site/#sources
+
+## Company
+
+- Founder & CEO: Shriman Maheshwari — https://www.linkedin.com/in/shriman-maheshwari-195abb32a/
+- Contact: team@dominiq.site
+- Website: https://dominiq.site/
+
+## Key pages
+
+- [Home](https://dominiq.site/): problem, how it works, capabilities, founder and FAQ
+- [FAQ](https://dominiq.site/#faq): short answers to common supplier questions
+- [Sources](https://dominiq.site/#sources): the regulations and reporting behind every statistic on the site

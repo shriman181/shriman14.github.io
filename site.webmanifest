@@ -1,0 +1,17 @@
+{
+  "name": "Dominiq — ITAR & CMMC Compliance for Defense Suppliers",
+  "short_name": "Dominiq",
+  "description": "AI compliance software for Tier 2 and Tier 3 defense subcontractors: ITAR and CUI file classification, NIST SP 800-171 evidence and supplier vetting.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "en",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -1,0 +1,15 @@
+/* TEAM */
+Founder & CEO: Shriman Maheshwari
+Contact: team [at] dominiq.site
+LinkedIn: https://www.linkedin.com/in/shriman-maheshwari-195abb32a/
+
+/* SITE */
+Last update: 2026/11/03
+Language: English
+Standards: HTML5, CSS3, JSON-LD (schema.org)
+Components: Inter and JetBrains Mono (Google Fonts); photography from Unsplash
+Hosting: GitHub Pages
+Domain: https://dominiq.site/
+
+/* THANKS */
+The machinists, electronics builders and specialty suppliers who make the parts.
